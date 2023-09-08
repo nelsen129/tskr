@@ -3,7 +3,6 @@ package init
 import (
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -50,8 +49,7 @@ func Init(directory string) error {
 	}
 
 	if !isEmpty {
-		log.Printf("[ERROR] Directory %s is not empty!", directory)
-		return nil
+		return fmt.Errorf("init %s: directory is not empty", directory)
 	}
 
 	fmt.Println("Creating structure...")

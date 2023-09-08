@@ -1,12 +1,8 @@
 package init
 
 import (
-	"bytes"
-	"fmt"
-	"log"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 )
 
@@ -114,20 +110,8 @@ func TestInitDirectoryNotEmpty(t *testing.T) {
 		t.Fatalf("Error: could not create file %s in directory %s, %v", tmpfile, tmpdir, err)
 	}
 
-	// Custom buffer to check log output
-	var buf bytes.Buffer
-	log.SetOutput(&buf)
-	t.Cleanup(func() {
-		log.SetOutput(os.Stderr)
-	})
-
 	err = Init(tmpdir)
-	if err != nil {
-		t.Fatalf("Error: expected to not error in init directory %s. Got %v, expected nil", tmpdir, err)
-	}
-
-	msg := fmt.Sprintf("[ERROR] Directory %s is not empty!", tmpdir)
-	if !strings.Contains(buf.String(), msg) {
-		t.Fatalf("Error: expected directory to be empty. Got %s, expected %s", buf.String(), msg)
+	if err == nil {
+		t.Fatalf("Error: expected to not error in init directory %s. Got %v, expected init %s: directory is not empty", tmpdir, err, tmpdir)
 	}
 }
