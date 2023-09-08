@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 func IsDirEmpty(name string) (bool, error) {
@@ -26,14 +27,14 @@ func CreateDirs(name string) error {
 		"inbox",
 		"projects",
 		"tasks",
-		"tasks/next",
-		"tasks/defer",
-		"tasks/waiting_for",
+		filepath.Join("tasks", "next"),
+		filepath.Join("tasks", "defer"),
+		filepath.Join("tasks", "waiting_for"),
 		"tickler",
 	}
 
 	for _, dir := range dirs {
-		err := os.Mkdir(name+"/"+dir, 0755)
+		err := os.Mkdir(filepath.Join(name, dir), 0755)
 		if err != nil {
 			return err
 		}
@@ -43,10 +44,6 @@ func CreateDirs(name string) error {
 }
 
 func Init(directory string) error {
-	if directory == "" {
-		directory = "."
-	}
-
 	isEmpty, err := IsDirEmpty(directory)
 	if err != nil {
 		return err
